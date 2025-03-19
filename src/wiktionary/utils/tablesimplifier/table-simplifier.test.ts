@@ -65,16 +65,16 @@ const complexTable = `
 </table>
 `;
 
-describe('Table Simplifier', () => {
-  describe('createMatrix', () => {
-    it('should create a matrix with correct dimensions', () => {
+describe("Table Simplifier", () => {
+  describe("createMatrix", () => {
+    it("should create a matrix with correct dimensions", () => {
       const matrix = createMatrix(3, 4);
-      
+
       expect(matrix.length).toBe(3);
       expect(matrix[0].length).toBe(4);
       expect(matrix[1].length).toBe(4);
       expect(matrix[2].length).toBe(4);
-      
+
       // Verify all cells are initialized to null
       for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 4; col++) {
@@ -84,19 +84,19 @@ describe('Table Simplifier', () => {
     });
   });
 
-  describe('calculateHtmlTableDimensions', () => {
-    it('should calculate correct dimensions for a simple table', () => {
+  describe("calculateHtmlTableDimensions", () => {
+    it("should calculate correct dimensions for a simple table", () => {
       const doc = parse(sampleTable);
       const dimensions = calculateHtmlTableDimensions(doc);
-      
+
       expect(dimensions.cols).toBe(7);
       expect(dimensions.rows).toBe(2);
     });
-    
-    it('should calculate correct dimensions for a complex table', () => {
+
+    it("should calculate correct dimensions for a complex table", () => {
       const doc = parse(complexTable);
       const dimensions = calculateHtmlTableDimensions(doc);
-      
+
       // 7 columns because of the colspan in the header
       expect(dimensions.cols).toBe(7);
       // 4 rows in the sample complex table
@@ -104,124 +104,125 @@ describe('Table Simplifier', () => {
     });
   });
 
-  describe('fillInMatrix', () => {
-    it('should correctly fill the matrix with table data', () => {
+  describe("fillInMatrix", () => {
+    it("should correctly fill the matrix with table data", () => {
       const doc = parse(sampleTable);
       const matrix = createMatrix(2, 7);
-      
+
       fillInMatrix(doc, matrix);
-      
+
       // Check some specific expected values
-      expect(matrix[0][0]).toBe('przypadek');
-      expect(matrix[0][1]).toBe('liczba pojedyncza');
-      expect(matrix[0][5]).toBe('liczba mnoga');
-      
-      expect(matrix[1][1]).toBe('gruby');
-      expect(matrix[1][3]).toBe('gruba');
-      expect(matrix[1][4]).toBe('grube');
-      expect(matrix[1][5]).toBe('grubi');
-      expect(matrix[1][6]).toBe('grube');
+      expect(matrix[0][0]).toBe("przypadek");
+      expect(matrix[0][1]).toBe("liczba pojedyncza");
+      expect(matrix[0][5]).toBe("liczba mnoga");
+
+      expect(matrix[1][1]).toBe("gruby");
+      expect(matrix[1][3]).toBe("gruba");
+      expect(matrix[1][4]).toBe("grube");
+      expect(matrix[1][5]).toBe("grubi");
+      expect(matrix[1][6]).toBe("grube");
     });
-    
-    it('should handle rowspan and colspan in complex tables', () => {
+
+    it("should handle rowspan and colspan in complex tables", () => {
       const doc = parse(complexTable);
       const dimensions = calculateHtmlTableDimensions(doc);
       const matrix = createMatrix(dimensions.rows, dimensions.cols);
-      
+
       fillInMatrix(doc, matrix);
-      
+
       // Check h/eader text that spans columns
-      expect(matrix[0][0]).toBe('stopień wyższy grubszy');
-      
+      expect(matrix[0][0]).toBe("stopień wyższy grubszy");
+
       // Check cells with rowspan
-      expect(matrix[1][0]).toBe('przypadek');
-      
+      expect(matrix[1][0]).toBe("przypadek");
+
       // Check cells with colspan
-      expect(matrix[1][1]).toBe('liczba pojedyncza');
-      
+      expect(matrix[1][1]).toBe("liczba pojedyncza");
+
       // Check values in the last row
-      expect(matrix[3][0]).toBe('mianownik');
-      expect(matrix[3][1]).toBe('grubszy');
-      expect(matrix[3][3]).toBe('grubsza');
+      expect(matrix[3][0]).toBe("mianownik");
+      expect(matrix[3][1]).toBe("grubszy");
+      expect(matrix[3][3]).toBe("grubsza");
     });
   });
 
-  describe('printTable', () => {
-    it('should generate correct HTML table from a matrix', () => {
+  describe("printTable", () => {
+    it("should generate correct HTML table from a matrix", () => {
       const data = [
-        ['Header 1', 'Header 2', 'Header 3'],
-        ['Cell 1,1', 'Cell 1,2', 'Cell 1,3'],
-        ['Cell 2,1', 'Cell 2,2', 'Cell 2,3']
+        ["Header 1", "Header 2", "Header 3"],
+        ["Cell 1,1", "Cell 1,2", "Cell 1,3"],
+        ["Cell 2,1", "Cell 2,2", "Cell 2,3"],
       ];
-      
+
       const result = printTable(data);
-      
+
       // Expected HTML output
-      const expected = "<table>" +
+      const expected =
+        "<table>" +
         "<tr><td>Header 1</td><td>Header 2</td><td>Header 3</td></tr>" +
         "<tr><td>Cell 1,1</td><td>Cell 1,2</td><td>Cell 1,3</td></tr>" +
         "<tr><td>Cell 2,1</td><td>Cell 2,2</td><td>Cell 2,3</td></tr>" +
         "</table>";
-        
+
       expect(result).toBe(expected);
     });
-    
-    it('should handle SKIP_MARKER correctly', () => {
+
+    it("should handle SKIP_MARKER correctly", () => {
       const data = [
-        ['Header', 'Span Content'],
-        [SKIP_MARKER, 'Cell']
+        ["Header", "Span Content"],
+        [SKIP_MARKER, "Cell"],
       ];
-      
+
       const result = printTable(data);
-      
+
       // Skip marker should be converted to a non-breaking space
-      const expected = "<table>" +
+      const expected =
+        "<table>" +
         "<tr><td>Header</td><td>Span Content</td></tr>" +
         "<tr><td>&#8193;</td><td>Cell</td></tr>" +
         "</table>";
-        
+
       expect(result).toBe(expected);
     });
   });
 
-  describe('simplifyTableSpans', () => {
-    it('should convert a complex table to a simplified table structure', () => {
+  describe("simplifyTableSpans", () => {
+    it("should convert a complex table to a simplified table structure", () => {
       const result = simplifyTableSpans(complexTable);
-      
+
       // The result should be a table string
-      expect(result).toContain('<table>');
-      expect(result).toContain('</table>');
-      
+      expect(result).toContain("<table>");
+      expect(result).toContain("</table>");
+
       // The result should not contain rowspan or colspan attributes
-      expect(result).not.toContain('rowspan=');
-      expect(result).not.toContain('colspan=');
-      
+      expect(result).not.toContain("rowspan=");
+      expect(result).not.toContain("colspan=");
+
       // The result should contain all the text from the original table
-      expect(result).toContain('stopień wyższy grubszy');
-      expect(result).toContain('przypadek');
-      expect(result).toContain('liczba pojedyncza');
-      expect(result).toContain('liczba mnoga');
-      expect(result).toContain('grubszy');
-      expect(result).toContain('grubsza');
-      expect(result).toContain('grubsi');
+      expect(result).toContain("stopień wyższy grubszy");
+      expect(result).toContain("przypadek");
+      expect(result).toContain("liczba pojedyncza");
+      expect(result).toContain("liczba mnoga");
+      expect(result).toContain("grubszy");
+      expect(result).toContain("grubsza");
+      expect(result).toContain("grubsi");
     });
-    
-    it('should handle a simple table correctly', () => {
+
+    it("should handle a simple table correctly", () => {
       const result = simplifyTableSpans(sampleTable);
-      
+
       // Verify basic structure
-      expect(result).toContain('<table>');
-      expect(result).toContain('</table>');
-      
+      expect(result).toContain("<table>");
+      expect(result).toContain("</table>");
+
       // Verify content is preserved
-      expect(result).toContain('przypadek');
-      expect(result).toContain('liczba pojedyncza');
-      expect(result).toContain('liczba mnoga');
-      expect(result).toContain('gruby');
-      expect(result).toContain('gruba');
-      expect(result).toContain('grube');
-      expect(result).toContain('grubi');
+      expect(result).toContain("przypadek");
+      expect(result).toContain("liczba pojedyncza");
+      expect(result).toContain("liczba mnoga");
+      expect(result).toContain("gruby");
+      expect(result).toContain("gruba");
+      expect(result).toContain("grube");
+      expect(result).toContain("grubi");
     });
   });
 });
-

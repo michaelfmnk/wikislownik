@@ -41,10 +41,8 @@ export default function WordInfoAction(props: WordInfoProps) {
           <Action.Push
             title="Definition"
             shortcut={{ modifiers: ["cmd"], key: "d" }}
-            target={
-              <Detail markdown={definition?.meanings.map((it, index) => ` ${index + 1}. ${it}`).join("\n")} />
-            }
-            />
+            target={<Detail markdown={definition?.meanings.map((it, index) => ` ${index + 1}. ${it}`).join("\n")} />}
+          />
         </ActionPanel>
       }
     />

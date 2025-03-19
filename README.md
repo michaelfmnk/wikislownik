@@ -39,7 +39,7 @@ This extension is built with:
 - `npm run dev`: Start the development server
 - `npm run build`: Build the extension
 - `npm run lint`: Check for lint issues
-- `npm run lint:fix`: Fix lint issues automatically
+- `npm run fix-lint`: Fix lint issues automatically
 - `npm test`: Run the test suite
 
 ## Contributing

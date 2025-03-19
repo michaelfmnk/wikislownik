@@ -13,7 +13,7 @@ export function extractConjugationTables(html: string): string[] {
 
   try {
     const sections = htmlElement.querySelectorAll("section");
-    
+
     // Find Polish language section containing conjugation tables
     for (const section of sections) {
       if (section.outerHTML.includes("lang-code-pl")) {
@@ -39,7 +39,7 @@ function removeInnerTables(table: HTMLElement): string {
     table.querySelectorAll("table").forEach((nestedTable: HTMLElement) => {
       nestedTable.parentNode.parentNode.remove();
     });
-    
+
     return table.toString();
   } catch (error) {
     console.error("Error removing inner tables:", error);
@@ -149,12 +149,12 @@ export function convertToMarkdown(html: string): string {
 export function extractMeanings(html: string): string[] {
   try {
     const doc = parse(html);
-    
+
     // Find meaning section elements
     const headerDl = doc.querySelector("dl>dt>span.fld-znaczenia")?.parentNode.parentNode;
     const dlWithDefinitions = headerDl?.nextElementSibling?.nextElementSibling;
     const definitions = dlWithDefinitions?.querySelectorAll("dd");
-    
+
     return (
       definitions?.map((it) =>
         it.innerText

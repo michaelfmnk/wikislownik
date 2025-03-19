@@ -27,7 +27,7 @@ export function calculateHtmlTableDimensions(doc: HTMLElement): { rows: number; 
   const rows = doc.querySelectorAll("tr").length;
   let cols = 0;
   const firstRow = doc.querySelector("tr");
-  
+
   if (firstRow) {
     const cells = firstRow.querySelectorAll("td, th");
     cells.forEach((cell) => {
@@ -35,7 +35,7 @@ export function calculateHtmlTableDimensions(doc: HTMLElement): { rows: number; 
       cols += colspan;
     });
   }
-  
+
   return { rows, cols };
 }
 
@@ -49,7 +49,7 @@ export function createMatrix(rows: number, cols: number): string[][] {
   const matrix = Array(rows)
     .fill(null)
     .map(() => Array(cols).fill(null));
-  
+
   return matrix;
 }
 
@@ -60,16 +60,16 @@ export function createMatrix(rows: number, cols: number): string[][] {
  */
 export function fillInMatrix(doc: HTMLElement, matrix: string[][]) {
   const rows = doc.querySelectorAll("tr");
-  
+
   for (let i = 0; i < rows.length; i++) {
     const cells = rows[i].querySelectorAll("td, th");
     let colIndex = 0;
-    
+
     for (let j = 0; j < cells.length; j++) {
       const cell = cells[j];
       const colspan = parseInt(cell.getAttribute("colspan") || "1");
       const rowspan = parseInt(cell.getAttribute("rowspan") || "1");
-      
+
       // Find next available column
       while (matrix[i][colIndex]) {
         colIndex++;
@@ -113,7 +113,7 @@ export function printTable(matrix: string[][]): string {
     }
     output += "</tr>";
   }
-  
+
   return "<table>" + output + "</table>";
 }
 

@@ -18,7 +18,7 @@ export interface WiktionaryApi {
    * @returns Search results containing matching pages
    */
   search(query: string): Promise<SearchResponse>;
-  
+
   /**
    * Load the HTML content of a word's page
    * @param word The word to look up

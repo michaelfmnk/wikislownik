@@ -52,16 +52,16 @@ export default class WiktionaryServiceImpl implements DictionaryService {
     try {
       // Fetch HTML content for the word
       const pageHtml = await this.api.loadWordPageHtml(word.text);
-      
+
       // Extract grammatical gender if present
       const gender = detectGender(pageHtml);
-      
+
       // Process conjugation tables
       const tablesHtml = extractConjugationTables(pageHtml)
         .map(simplifyTableSpans)
         .map((it) => markTableHeaders(it, (row) => row.includes("mianownik")));
       const conjugationMarkdown = tablesHtml.map(convertToMarkdown).join("\n\n");
-      
+
       // Extract word meanings
       const meanings = extractMeanings(pageHtml);
 
@@ -95,7 +95,7 @@ export default class WiktionaryServiceImpl implements DictionaryService {
    */
   private async fetchTranslations(text: string): Promise<Translation[]> {
     const translations: Translation[] = [];
-    
+
     try {
       // Get Ukrainian translation
       const ukTranslation = await translate(text, { from: "pl", to: "uk" });
@@ -103,7 +103,7 @@ export default class WiktionaryServiceImpl implements DictionaryService {
         language: Language.UK,
         text: ukTranslation.text,
       });
-      
+
       // Get English translation
       const enTranslation = await translate(text, { from: "pl", to: "en" });
       translations.push({
@@ -113,7 +113,7 @@ export default class WiktionaryServiceImpl implements DictionaryService {
     } catch (error) {
       console.error("Error fetching translations:", error);
     }
-    
+
     return translations;
   }
 
