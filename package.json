@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "wikislownik",
-  "title": "wikislownik",
-  "description": "",
+  "title": "Wikislownik",
+  "description": "An extension for the Polish Wiktionary (Wikisłownik) that allows you to quickly search and view dictionary entries",
   "icon": "extension-icon.png",
   "author": "michael_fomenko",
   "owner": "michaelfmnk",
@@ -14,7 +14,7 @@
     {
       "name": "search",
       "title": "Search",
-      "description": "",
+      "description": "Search for a word in the Polish Wiktionary",
       "mode": "view"
     }
   ],

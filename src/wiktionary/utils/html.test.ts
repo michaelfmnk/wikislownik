@@ -62,18 +62,6 @@ const sampleHtml = `
 `;
 
 /**
- * Sample HTML with gender indicators
- */
-const genderHtml = `
-<html>
-  <body>
-    <div>rzeczownik, rodzaj męskorzeczowy</div>
-    <div>Some other content</div>
-  </body>
-</html>
-`;
-
-/**
  * Sample table HTML for header marking
  */
 const tableWithHeaders = `
