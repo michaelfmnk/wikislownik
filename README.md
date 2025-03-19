@@ -24,7 +24,7 @@ A Raycast extension for the Polish Wiktionary (Wikisłownik) that allows you to 
 
 ## Commands
 
-- `wikislownik`: Open the main extension interface
+- `Search`: Search for a word in the Polish Wiktionary
 
 ## Development
 
