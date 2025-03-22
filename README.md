@@ -8,6 +8,16 @@ A Raycast extension for the Polish Wiktionary (Wikisłownik) that allows you to 
 - View word definitions, examples, and conjugation tables
 - Support for different parts of speech and language variants
 
+<details>
+<summary>Screenshots</summary>
+
+![Search](./screenshots/02.png)
+![Word Details Screen](./screenshots/01.png)
+![Conjugation Table - noun](./screenshots/03.png)
+![Conjugation Table - adj](./screenshots/04.png)
+![Definitions](./screenshots/05.png)
+</details>
+
 ## Installation
 
 1. Make sure you have [Raycast](https://raycast.com/) installed
