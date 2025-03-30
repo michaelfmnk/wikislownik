@@ -26,7 +26,7 @@ export function useDictionarySearch(searchTerm: string) {
         return await service.search(searchTerm);
       },
       // Only enable search when search term is valid and long enough
-      enabled: Boolean(searchTerm) && searchTerm.length > MIN_SEARCH_LENGTH,
+      enabled: Boolean(searchTerm) && searchTerm.length >= MIN_SEARCH_LENGTH,
       staleTime: FIVE_MINUTES_MS,
     },
     client,

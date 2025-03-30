@@ -38,11 +38,13 @@ export default function WordInfoAction(props: WordInfoProps) {
             }
           />
 
-          <Action.Push
-            title="Definition"
-            shortcut={{ modifiers: ["cmd"], key: "d" }}
-            target={<Detail markdown={definition?.meanings.map((it, index) => ` ${index + 1}. ${it}`).join("\n")} />}
-          />
+          {definition?.word.thumbnail && (
+            <Action.Push
+              title="Definition"
+              shortcut={{ modifiers: ["cmd"], key: "d" }}
+              target={<Detail markdown={imageMarkdown(definition)} />}
+            />
+          )}
         </ActionPanel>
       }
     />
@@ -64,6 +66,13 @@ function markdownOf(definition: WordDefinition | undefined): string {
     return "Loading...";
   }
 
-  // image
+  return definition?.meanings.map((it, index) => ` ${index + 1}. ${it}`).join("\n");
+}
+
+function imageMarkdown(definition: WordDefinition): string | undefined {
+  if (!definition.word.thumbnail) {
+    return undefined;
+  }
+
   return `![${definition.word.text}](${definition.word.thumbnail})`;
 }
