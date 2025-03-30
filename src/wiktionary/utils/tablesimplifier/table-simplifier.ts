@@ -79,10 +79,11 @@ export function fillInMatrix(doc: HTMLElement, matrix: string[][]) {
   for (let i = 0; i < rows.length; i++) {
     const cells = rows[i].querySelectorAll("td, th");
     let colIndex = 0;
+    const maxCols = matrix[i].length;
 
     for (let j = 0; j < cells.length; j++) {
       const cell = cells[j];
-      const colspan = parseInt(cell.getAttribute("colspan") || "1");
+      const colspan = Math.min(parseInt(cell.getAttribute("colspan") || "1"), maxCols - colIndex);
       const rowspan = parseInt(cell.getAttribute("rowspan") || "1");
 
       // Find next available column
