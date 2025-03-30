@@ -5,7 +5,6 @@ import { HTMLElement, parse } from "node-html-parser";
  */
 export const SKIP_MARKER = "[SKIP]";
 
-
 /**
  * Cleanup the document by removing <style> and <script> tags
  * @param doc
