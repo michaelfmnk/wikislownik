@@ -5,13 +5,28 @@ import { HTMLElement, parse } from "node-html-parser";
  */
 export const SKIP_MARKER = "[SKIP]";
 
+
+/**
+ * Cleanup the document by removing <style> and <script> tags
+ * @param doc
+ * @returns Cleaned document
+ */
+function cleanupDoc(doc: HTMLElement): HTMLElement {
+  const styles = doc.querySelectorAll("style");
+  const scripts = doc.querySelectorAll("script");
+
+  styles.forEach((style) => style.remove());
+  scripts.forEach((script) => script.remove());
+  return doc;
+}
+
 /**
  * Convert HTML table with complex rowspan/colspan structure to a simplified format
  * @param html The HTML content of the table
  * @returns Simplified HTML table without rowspan/colspan attributes
  */
 export function simplifyTableSpans(html: string): string {
-  const doc = parse(html);
+  const doc = cleanupDoc(parse(html));
   const dimensions = calculateHtmlTableDimensions(doc);
   const matrix = createMatrix(dimensions.rows, dimensions.cols);
   fillInMatrix(doc, matrix);
