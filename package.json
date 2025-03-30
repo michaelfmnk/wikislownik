@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "@iamtraction/google-translate": "^2.0.1",
-    "@raycast/api": "^1.93.2",
+    "@raycast/api": "^1.94.2",
     "@raycast/utils": "^1.17.0",
     "@tanstack/react-query": "^5.68.0",
     "@uidotdev/usehooks": "^2.4.1",
