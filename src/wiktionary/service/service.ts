@@ -79,7 +79,6 @@ export default class WiktionaryServiceImpl implements DictionaryService {
       // Extract word meanings
       const meanings = extractMeanings(pageHtml);
 
-      cache.get(ENABLED_LANGUAGES_KEY);
       const translations = await this.fetchTranslations(word.text, languages);
 
       // Save the definition to cache
