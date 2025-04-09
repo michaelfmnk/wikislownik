@@ -48,12 +48,42 @@ export enum Gender {
   Neutral = "nijaki",
 }
 
+//  /** Language - Select the language you want to translate to */
+//   "EN": boolean,
+//   /**  - Select the language you want to translate to */
+//   "UK"?: boolean,
+//   /**  - Select the language you want to translate to */
+//   "DE"?: boolean,
+//   /**  - Select the language you want to translate to */
+//   "FR"?: boolean,
+//   /**  - Select the language you want to translate to */
+//   "CZ"?: boolean,
+//   /**  - Select the language you want to translate to */
+//   "ES"?: boolean,
+//   /**  - Select the language you want to translate to */
+//   "PT"?: boolean
 /**
  * Supported languages for translations
  */
-export enum Language {
-  EN = "English",
-  UK = "Ukrainian",
+export const Languages = {
+  EN: { fullName: "English", code: "en" } as Language,
+  UK: { fullName: "Ukrainian", code: "uk" } as Language,
+  DE: { fullName: "German", code: "de" } as Language,
+  FR: { fullName: "French", code: "fr" } as Language,
+  CZ: { fullName: "Czech", code: "cz" } as Language,
+  ES: { fullName: "Spanish", code: "es" } as Language,
+  PT: { fullName: "Portuguese", code: "pt" } as Language,
+  SW: { fullName: "Swedish", code: "sw" } as Language,
+};
+
+/**
+ * Language definition
+ */
+export interface Language {
+  /** Full name of the language */
+  fullName: string;
+  /** Language code */
+  code: string;
 }
 
 /**

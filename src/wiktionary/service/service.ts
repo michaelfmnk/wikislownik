@@ -6,10 +6,11 @@ import {
   detectGender,
   extractConjugationTables,
   extractMeanings,
-  markTableHeaders,
+  markTableHeaders
 } from "../utils/html";
 import { Page } from "../api";
 import simplifyTableSpans from "../utils/tablesimplifier";
+import { readSelectedLanguages } from "../../preferences";
 
 /**
  * Implementation of the dictionary service using Wiktionary
@@ -66,7 +67,7 @@ export default class WiktionaryServiceImpl implements DictionaryService {
       const meanings = extractMeanings(pageHtml);
 
       // Fetch translations
-      const translations = await this.fetchTranslations(word.text);
+      const translations = await this.fetchTranslations(word.text, readSelectedLanguages());
 
       return {
         word,
@@ -91,27 +92,22 @@ export default class WiktionaryServiceImpl implements DictionaryService {
   /**
    * Fetch translations for a word
    * @param text The word to translate
+   * @param languages The target languages for translation
    * @returns Array of translations
    */
-  private async fetchTranslations(text: string): Promise<Translation[]> {
+  private async fetchTranslations(text: string, languages: Language[]): Promise<Translation[]> {
     const translations: Translation[] = [];
 
-    try {
-      // Get Ukrainian translation
-      const ukTranslation = await translate(text, { from: "pl", to: "uk" });
-      translations.push({
-        language: Language.UK,
-        text: ukTranslation.text,
-      });
-
-      // Get English translation
-      const enTranslation = await translate(text, { from: "pl", to: "en" });
-      translations.push({
-        language: Language.EN,
-        text: enTranslation.text,
-      });
-    } catch (error) {
-      console.error("Error fetching translations:", error);
+    for (const lang of languages) {
+      try {
+        const translation = await translate(text, { from: "pl", to: lang.code });
+        translations.push({
+          language: lang.fullName,
+          text: translation.text,
+        });
+      } catch (error) {
+        console.error("Error fetching translations:", error);
+      }
     }
 
     return translations;

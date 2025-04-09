@@ -18,6 +18,73 @@
       "mode": "view"
     }
   ],
+  "preferences": [
+    {
+      "name": "EN",
+      "title": "Language",
+      "description": "English as translation language",
+      "type": "checkbox",
+      "label": "English",
+      "default": true,
+      "required": false
+    },
+    {
+      "name": "UK",
+      "title": "",
+      "description": "Ukrainian as translation language",
+      "type": "checkbox",
+      "label": "Ukrainian",
+      "required": false
+    },
+    {
+      "name": "DE",
+      "title": "",
+      "description": "German as translation language",
+      "type": "checkbox",
+      "label": "German",
+      "required": false
+    },
+    {
+      "name": "FR",
+      "title": "",
+      "description": "French as translation language",
+      "type": "checkbox",
+      "label": "French",
+      "required": false
+    },
+    {
+      "name": "CZ",
+      "title": "",
+      "description": "Czech as translation language",
+      "type": "checkbox",
+      "label": "Czech",
+      "required": false
+    },
+    {
+      "name": "ES",
+      "title": "",
+      "description": "Español as translation language",
+      "type": "checkbox",
+      "label": "Español",
+      "required": false
+    },
+    {
+      "name": "PT",
+      "title": "",
+      "description": "Portuguese as translation language",
+      "type": "checkbox",
+      "label": "Portuguese",
+      "required": false
+    },
+    {
+      "name": "SW",
+      "title": "",
+      "description": "Swedish as translation language",
+      "type": "checkbox",
+      "label": "Swedish",
+      "required": false
+    }
+  ],
   "dependencies": {
     "@iamtraction/google-translate": "^2.0.1",
     "@raycast/api": "^1.94.2",
