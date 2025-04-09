@@ -53,14 +53,6 @@
       "required": false
     },
     {
-      "name": "CZ",
-      "title": "",
-      "description": "Czech as translation language",
-      "type": "checkbox",
-      "label": "Czech",
-      "required": false
-    },
-    {
       "name": "ES",
       "title": "",
       "description": "Español as translation language",

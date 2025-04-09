@@ -66,7 +66,11 @@ function markdownOf(definition: WordDefinition | undefined): string {
     return "Loading...";
   }
 
-  return definition?.meanings.map((it, index) => ` ${index + 1}. ${it}`).join("\n");
+  return `
+  # ${definition.word.text}
+  ---
+  ${definition?.meanings.map((it, index) => ` ${index + 1}. ${it}`).join("\n")}
+  `;
 }
 
 function imageMarkdown(definition: WordDefinition): string | undefined {
