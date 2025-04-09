@@ -6,12 +6,14 @@ import {
   detectGender,
   extractConjugationTables,
   extractMeanings,
-  markTableHeaders
+  markTableHeaders,
 } from "../utils/html";
 import { Page } from "../api";
 import simplifyTableSpans from "../utils/tablesimplifier";
 import { readSelectedLanguages } from "../../preferences";
+import { Cache } from "@raycast/api";
 
+const cache = new Cache();
 /**
  * Implementation of the dictionary service using Wiktionary
  */
@@ -50,6 +52,17 @@ export default class WiktionaryServiceImpl implements DictionaryService {
    * @returns Complete word definition including translations and conjugation tables
    */
   async loadDefinition(word: Word): Promise<WordDefinition> {
+    const languages = readSelectedLanguages();
+
+    // Reset cache if languages have changed
+    this.resetCacheOnLanguageChange(languages);
+
+    // Check cache for previously fetched definitions
+    const cachedDefinition = cache.get(word.text);
+    if (cachedDefinition) {
+      return JSON.parse(cachedDefinition);
+    }
+
     try {
       // Fetch HTML content for the word
       const pageHtml = await this.api.loadWordPageHtml(word.text);
@@ -66,16 +79,20 @@ export default class WiktionaryServiceImpl implements DictionaryService {
       // Extract word meanings
       const meanings = extractMeanings(pageHtml);
 
-      // Fetch translations
-      const translations = await this.fetchTranslations(word.text, readSelectedLanguages());
+      cache.get(ENABLED_LANGUAGES_KEY);
+      const translations = await this.fetchTranslations(word.text, languages);
 
-      return {
+      // Save the definition to cache
+      const definition = {
         word,
         gender,
         meanings,
         translations,
         conjugationMarkdown,
       };
+
+      cache.set(word.text, JSON.stringify(definition));
+      return definition;
     } catch (error) {
       console.error(`Error loading definition for ${word.text}:`, error);
       // Return a basic definition with the word but without details
@@ -127,5 +144,18 @@ export default class WiktionaryServiceImpl implements DictionaryService {
     }
 
     return undefined;
+  }
+
+  private resetCacheOnLanguageChange(languages: Language[]) {
+    const languagesString = this.serialize(languages);
+    const previouslyEnabledLanguages = cache.get("enabled_languages") || "";
+    if (previouslyEnabledLanguages.localeCompare(languagesString) !== 0) {
+      cache.clear();
+      cache.set("enabled_languages", languagesString);
+    }
+  }
+
+  private serialize(languages: Language[]): string {
+    return languages.map((it) => it.code).join(",");
   }
 }

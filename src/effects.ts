@@ -22,7 +22,6 @@ export function useDictionarySearch(searchTerm: string) {
     {
       queryKey: ["useDictionarySearch", searchTerm],
       queryFn: async () => {
-        console.log("Searching dictionary for:", searchTerm);
         return await service.search(searchTerm);
       },
       // Only enable search when search term is valid and long enough
@@ -43,7 +42,6 @@ export function useDictionaryDefinition(word: Word): UseQueryResult<WordDefiniti
     {
       queryKey: ["useDictionaryDefinition", word.text],
       queryFn: async () => {
-        console.log("Fetching definition for:", word.text);
         return await service.loadDefinition(word);
       },
       // Only enable when word text is available
