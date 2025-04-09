@@ -22,4 +22,5 @@ jobs:
         node-version: '23.x'
         cache: 'npm'
         
+    - run: npm ci
     - run: npm run build
