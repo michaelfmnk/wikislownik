@@ -75,6 +75,38 @@
       "type": "checkbox",
       "label": "Swedish",
       "required": false
+    },
+    {
+      "name": "CS",
+      "title": "",
+      "type": "checkbox",
+      "description": "Czech as translation language",
+      "label": "Czech",
+      "required": false
+    },
+    {
+      "name": "IT",
+      "title": "",
+      "description": "Italian as translation language",
+      "type": "checkbox",
+      "label": "Italian",
+      "required": false
+    },
+    {
+      "name": "NL",
+      "title": "",
+      "description": "Dutch as translation language",
+      "type": "checkbox",
+      "label": "Dutch",
+      "required": false
+    },
+    {
+      "name": "HU",
+      "title": "",
+      "description": "Hungarian as translation language",
+      "type": "checkbox",
+      "label": "Hungarian",
+      "required": false
     }
   ],
   "dependencies": {

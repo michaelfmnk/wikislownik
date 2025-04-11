@@ -59,6 +59,10 @@ export const Languages = {
   ES: { fullName: "Spanish", code: "es" } as Language,
   PT: { fullName: "Portuguese", code: "pt" } as Language,
   SW: { fullName: "Swedish", code: "sw" } as Language,
+  CS: { fullName: "Czech", code: "cs" } as Language,
+  IT: { fullName: "Italian", code: "it" } as Language,
+  NL: { fullName: "Dutch", code: "nl" } as Language,
+  HU: { fullName: "Hungarian", code: "hu" } as Language,
 };
 
 /**
