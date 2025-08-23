@@ -1,6 +1,9 @@
-import { Action, ActionPanel, Detail } from "@raycast/api";
+import { Action, ActionPanel, Detail, showToast, Toast } from "@raycast/api";
 import { useDictionaryDefinition } from "../effects";
-import { Gender, Word, WordDefinition } from "../dictionary";
+import { Gender, KnowledgeScore, Word, WordDefinition } from "../dictionary";
+import { vocabService } from "../vocab-service";
+import { getScoreDisplayName, getScoreOptions } from "../score-utils";
+import { useEffect, useState } from "react";
 
 interface WordInfoProps {
   word: Word;
@@ -8,6 +11,61 @@ interface WordInfoProps {
 
 export default function WordInfoAction(props: WordInfoProps) {
   const { data: definition, isLoading, status } = useDictionaryDefinition(props.word);
+  const [isWordSaved, setIsWordSaved] = useState(false);
+
+  useEffect(() => {
+    async function checkIfSaved() {
+      const saved = await vocabService.isWordSaved(props.word.text);
+      setIsWordSaved(saved);
+    }
+    checkIfSaved();
+  }, [props.word.text]);
+
+  const handleSaveWord = (score: KnowledgeScore) => {
+    return async () => {
+      if (!definition) return;
+
+      try {
+        await vocabService.saveWord(definition.word.text, definition.translations, score);
+        setIsWordSaved(true);
+        await showToast({
+          style: Toast.Style.Success,
+          title: "Word Saved",
+          message: `"${definition.word.text}" saved with ${getScoreDisplayName(score)} level`,
+        });
+      } catch (error) {
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Error",
+          message: "Failed to save word to vocabulary",
+        });
+      }
+    };
+  };
+
+  const handleRemoveWord = async () => {
+    if (!definition) return;
+
+    try {
+      const vocab = await vocabService.getVocabulary();
+      const entry = vocab.find((v) => v.word === definition.word.text);
+      if (entry) {
+        await vocabService.removeWord(entry.id);
+        setIsWordSaved(false);
+        await showToast({
+          style: Toast.Style.Success,
+          title: "Word Removed",
+          message: `"${definition.word.text}" removed from vocabulary`,
+        });
+      }
+    } catch (error) {
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Error",
+        message: "Failed to remove word from vocabulary",
+      });
+    }
+  };
 
   return (
     <Detail
@@ -29,6 +87,29 @@ export default function WordInfoAction(props: WordInfoProps) {
       }
       actions={
         <ActionPanel>
+          {definition &&
+            (isWordSaved ? (
+              <Action
+                title="Remove from Vocabulary"
+                icon={{ source: "trash.png" }}
+                shortcut={{ modifiers: ["cmd"], key: "r" }}
+                onAction={handleRemoveWord}
+              />
+            ) : (
+              <ActionPanel.Submenu
+                title="Save to Vocabulary"
+                icon={{ source: "star.png" }}
+                shortcut={{ modifiers: ["cmd"], key: "s" }}
+              >
+                {getScoreOptions().map((option) => (
+                  <Action
+                    key={option.score}
+                    title={`${option.emoji} ${option.name}`}
+                    onAction={handleSaveWord(option.score)}
+                  />
+                ))}
+              </ActionPanel.Submenu>
+            ))}
           <Action.OpenInBrowser url={props.word.dictionaryUrl} />
           <Action.Push
             title="Conjugation"

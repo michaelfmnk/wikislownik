@@ -100,3 +100,30 @@ export interface WordDefinition {
   /** Translations to other languages */
   translations: Translation[];
 }
+
+/**
+ * Knowledge score levels for vocabulary words
+ */
+export enum KnowledgeScore {
+  Unknown = 0,
+  Familiar = 1,
+  Good = 2,
+  VeryGood = 3,
+  Perfect = 4,
+}
+
+/**
+ * Vocabulary entry saved by user
+ */
+export interface VocabEntry {
+  /** Unique identifier */
+  id: string;
+  /** The Polish word */
+  word: string;
+  /** Translations in user's selected languages */
+  translations: Translation[];
+  /** How well the user knows this word (0-4) */
+  score: KnowledgeScore;
+  /** When the word was saved */
+  savedAt: number;
+}

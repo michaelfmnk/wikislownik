@@ -16,6 +16,19 @@
       "title": "Search",
       "description": "Search for a word in the Polish Wiktionary",
       "mode": "view"
+    },
+    {
+      "name": "vocabulary",
+      "title": "My Vocabulary",
+      "description": "View and manage your saved vocabulary list",
+      "mode": "view"
+    },
+    {
+      "name": "reminderNotifications",
+      "title": "Reminder System Notifications",
+      "description": "Background service to notify the user through a system notification when a reminder date is right up",
+      "mode": "no-view",
+      "interval": "1h"
     }
   ],
   "preferences": [
